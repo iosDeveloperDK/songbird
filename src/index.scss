@@ -1,0 +1,25 @@
+* {
+  padding: 0px;
+  margin: 0px;
+}
+
+body {
+  background-color: #222 !important;
+}
+
+.container {
+  max-width: 1140px;
+}
+
+.no-padding {
+  padding: 0px !important;
+}
+
+#myVideo {
+  position: fixed;
+  z-index: -1;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+}
