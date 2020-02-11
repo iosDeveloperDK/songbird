@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import Question from './question'
 import Answers from './answer'
 import AnswerList from './answer-list'
 import Next from './next'
-import { isEmpty } from 'lodash'
 
 export default function Quiz({ data, handleNextLevel, handleScore }) {
   const score = 6

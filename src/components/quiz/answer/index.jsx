@@ -1,6 +1,5 @@
 import React from 'react'
 import AudioPlayer from '../../player'
-import { Container, Row, Col } from 'react-bootstrap'
 import './index.scss'
 
 export default function Answers({ selectAnswer }) {

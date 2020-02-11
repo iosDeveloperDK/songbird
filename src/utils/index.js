@@ -37,8 +37,7 @@ export const calculateTotalValue = length => {
 }
 
 export const calculateCurrentValue = currentTime => {
-  var current_hour = parseInt(currentTime / 3600) % 24,
-    current_minute = parseInt(currentTime / 60) % 60,
+  var current_minute = parseInt(currentTime / 60) % 60,
     current_seconds_long = currentTime % 60,
     current_seconds = current_seconds_long.toFixed(),
     current_time =
