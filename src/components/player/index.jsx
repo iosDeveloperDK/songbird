@@ -1,29 +1,44 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/media-has-caption */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { MdPlayArrow, MdPause } from 'react-icons/md'
 import { calculateCurrentValue, calculateTotalValue } from '../../utils'
-import { MdPlayArrow } from 'react-icons/md'
-import { MdPause } from 'react-icons/md'
+import CONSTANTS from '../../utils/constants'
 import './index.scss'
 
 export class AudioPlayer extends Component {
   constructor(props) {
     super(props)
+
     this.state = { isPlay: false, isLoad: false }
+
+    this.playerRef = React.createRef()
+    this.startTimeRef = React.createRef()
+    this.endTimeRef = React.createRef()
+    this.progressRef = React.createRef()
   }
 
   initProgressBar = () => {
-    const player = this.refs.player
+    const {
+      playerRef: { current: player },
+      startTimeRef: { current: startTime },
+      endTimeRef: { current: endTime },
+      progressRef: { current: progress },
+    } = this
 
-    if (player) {
+    if (player && startTime && endTime && progress) {
       const length = player.duration
-      const current_time = player.currentTime
+      const time = player.currentTime
       const totalLength = calculateTotalValue(length)
 
-      this.refs.endTime.innerHTML = totalLength
-      this.refs.startTime.innerHTML = calculateCurrentValue(current_time)
+      endTime.innerHTML = totalLength
+      startTime.innerHTML = calculateCurrentValue(time)
 
-      var progressbar = this.refs.progress
-      progressbar.value = player.currentTime / player.duration
-      progressbar.addEventListener('click', this)
+      progress.value = player.currentTime / player.duration
+      progress.addEventListener('click', this)
 
       if (player.currentTime === player.duration) {
         this.setState({ isPlay: false })
@@ -31,22 +46,38 @@ export class AudioPlayer extends Component {
     }
   }
 
-  handleEvent(event) {
-    const player = this.refs.player
-    const progressbar = this.refs.progress
-    const percent = event.offsetX / progressbar.offsetWidth
-    player.currentTime = percent * player.duration
-    progressbar.value = percent
-  }
-
   play = () => {
-    this.refs.player.play()
+    const {
+      playerRef: { current: player },
+    } = this
+
+    player.play()
     this.setState({ isPlay: true })
   }
 
   pause = () => {
-    this.refs.player.pause()
+    const {
+      playerRef: { current: player },
+    } = this
+
+    player.pause()
     this.setState({ isPlay: false })
+  }
+
+  handlePlay = isPlay => {
+    if (isPlay) {
+      this.pause()
+    } else {
+      this.play()
+    }
+  }
+
+  handleEvent(event) {
+    const { player, progress } = this
+    const progressbar = progress
+    const percent = event.offsetX / progressbar.offsetWidth
+    player.currentTime = percent * player.duration
+    progressbar.value = percent
   }
 
   render() {
@@ -61,45 +92,20 @@ export class AudioPlayer extends Component {
               <div
                 className="playback-button"
                 onClick={() => {
-                  if (isPlay) {
-                    this.pause()
-                  } else {
-                    this.play()
-                  }
+                  this.handlePlay(isPlay)
                 }}
               >
-                {isPlay ? (
-                  <MdPause className="play-btn" />
-                ) : (
-                  <MdPlayArrow className="play-btn" />
-                )}
+                {isPlay ? <MdPause className="play-btn" /> : <MdPlayArrow className="play-btn" />}
               </div>
-              <progress
-                className="seek"
-                ref="progress"
-                value="0"
-                max="1"
-              ></progress>
+              <progress className="seek" ref={this.progressRef} value="0" max="1" />
             </div>
             <div className="player-time">
-              <small
-                ref="startTime"
-                className="start-time"
-                style={{ float: 'left', position: 'relative', left: '20px' }}
-              ></small>
-              <small
-                ref="endTime"
-                className="end-time"
-                style={{
-                  float: 'right',
-                  position: 'relative',
-                  right: '20px'
-                }}
-              ></small>
+              <small ref={this.startTimeRef} className="start-time" />
+              <small ref={this.endTimeRef} className="end-time" />
             </div>
           </div>
         ) : (
-          <span>Loading....</span>
+          <span>{CONSTANTS.loading}</span>
         )}
 
         <audio
@@ -111,7 +117,7 @@ export class AudioPlayer extends Component {
             this.initProgressBar()
           }}
           className="player"
-          ref="player"
+          ref={this.playerRef}
           style={{ opacity: 0 }}
         >
           <source src={src} type="audio/mpeg" />
@@ -119,6 +125,10 @@ export class AudioPlayer extends Component {
       </div>
     )
   }
+}
+
+AudioPlayer.propTypes = {
+  src: PropTypes.string.isRequired,
 }
 
 export default AudioPlayer

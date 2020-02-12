@@ -1,7 +1,7 @@
 import React from 'react'
+import Root from './components/root'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.scss'
-import Root from './components/root'
 
 function App() {
   return (

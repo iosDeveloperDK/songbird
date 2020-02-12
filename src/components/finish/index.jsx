@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
-import './index.scss'
+import PropTypes from 'prop-types'
 import { playVictory, stopPlay } from '../../utils'
+import './index.scss'
+import CONSTANTS from '../../utils/constants'
 
 export class Finish extends Component {
   componentDidMount() {
@@ -19,15 +21,20 @@ export class Finish extends Component {
     const { handleRestart, score } = this.props
     return (
       <div className="finish">
-        <h1>Поздравляем!</h1>
-        <p>{`Вы прошли викторину и набрали ${score} из 30 возможных баллов`}</p>
+        <h1>{CONSTANTS.congratulation}</h1>
+        <p>{CONSTANTS.tryAgain(score)}</p>
         <hr className="line" />
-        <button className="btn-restart" onClick={() => handleRestart()}>
-          Попробывать еще раз!
+        <button className="btn-restart" onClick={() => handleRestart()} type="button">
+          {CONSTANTS.tryAgainButton}
         </button>
       </div>
     )
   }
+}
+
+Finish.propTypes = {
+  score: PropTypes.number.isRequired,
+  handleRestart: PropTypes.func.isRequired,
 }
 
 export default Finish
