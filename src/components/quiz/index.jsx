@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { Component } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 import Question from './question'
@@ -6,68 +6,76 @@ import Answers from './answer'
 import AnswerList from './answer-list'
 import Next from './next'
 
-export default function Quiz({ data, handleNextLevel, handleScore }) {
-  const score = 6
-  const [answer, setAnser] = React.useState({})
-  const [selectAnswer, setSelectAnswer] = React.useState(null)
-  const [isFind, setFind] = React.useState(false)
-  const [answers, setAnswers] = React.useState([])
+const score = 6
 
-  useEffect(() => {
+export class Quiz extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { isFind: false, answer: {}, answers: [], selectAnswer: null }
+  }
+
+  componentDidMount() {
+    const { data } = this.props
+
     const getAnswer = data[Math.floor(Math.random() * data.length)]
     let isInsert = false
-    data.forEach(value => {
-      if (value.name === 'Курица' || value.name === 'Петух') {
-        setAnser(value)
+    data.forEach(answer => {
+      if (answer.name === 'Курица' || answer.name === 'Петух') {
+        this.setState({ answer }, () => {
+          console.log(`Правильный ответ: ${answer.name}`)
+        })
         isInsert = true
       }
     })
     if (!isInsert) {
-      setAnser(getAnswer)
+      this.setState({ answer: getAnswer }, () => {
+        const { answer } = this.state
+        console.log(`Правильный ответ: ${answer.name}`)
+      })
     }
-  }, [])
-
-  useEffect(() => {
-    if (answer.name) {
-      console.log(`Правильный ответ: ${answer.name}`)
-    }
-  }, [answer])
-
-  useEffect(() => {
-    if (answers.includes(answer.id)) {
-      setFind(true)
-      handleScore(score - answers.length)
-    }
-  }, [answers])
-
-  const handleAnswerClick = bird => {
-    if (!answers.includes(bird.id) && !isFind) {
-      setAnswers([...answers, bird.id])
-    }
-    setSelectAnswer(bird)
   }
 
-  return (
-    <Container fluid className="no-padding">
-      <Question answer={answer} isFind={isFind} />
-      <Row>
-        <Col sm={5}>
-          <AnswerList
-            answer={answer}
-            answers={answers}
-            birds={data}
-            handleAnswerClick={handleAnswerClick}
-          />
-        </Col>
-        <Col sm={7}>
-          <Answers selectAnswer={selectAnswer} />
-        </Col>
-        <Col sm={12}>
-          <Next isFind={isFind} handleNextLevel={handleNextLevel} />
-        </Col>
-      </Row>
-    </Container>
-  )
+  handleAnswerClick = bird => {
+    const { answers, isFind, answer } = this.state
+
+    const { handleScore } = this.props
+    if (!answers.includes(bird.id) && !isFind) {
+      this.setState({ answers: [...answers, bird.id] }, () => {
+        if (answers.includes(answer.id)) {
+          this.setState({ isFind: true })
+          handleScore(score - answers.length)
+        }
+      })
+    }
+    this.setState({ selectAnswer: bird })
+  }
+
+  render() {
+    const { answer, isFind, answers, selectAnswer } = this.state
+    const { data, handleNextLevel } = this.props
+
+    return (
+      <Container fluid className="no-padding">
+        <Question answer={answer} isFind={isFind} />
+        <Row>
+          <Col sm={5}>
+            <AnswerList
+              birds={data}
+              answer={answer}
+              answers={answers}
+              handleAnswerClick={this.handleAnswerClick}
+            />
+          </Col>
+          <Col sm={7}>
+            <Answers selectAnswer={selectAnswer} />
+          </Col>
+          <Col sm={12}>
+            <Next isFind={isFind} handleNextLevel={handleNextLevel} />
+          </Col>
+        </Row>
+      </Container>
+    )
+  }
 }
 
 Quiz.propTypes = {
@@ -87,3 +95,5 @@ Quiz.propTypes = {
 Quiz.defaultProps = {
   data: [],
 }
+
+export default Quiz
