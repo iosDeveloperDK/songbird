@@ -1,6 +1,6 @@
-const audioWrong = new Audio('/audio/wrong.mp3')
-const audioCorrect = new Audio('/audio/correct.mp3')
-const audioVictory = new Audio('/audio/victory.mp3')
+const audioWrong = new Audio(`${process.env.PUBLIC_URL}/audio/wrong.mp3`)
+const audioCorrect = new Audio(`${process.env.PUBLIC_URL}/audio/correct.mp3`)
+const audioVictory = new Audio(`${process.env.PUBLIC_URL}/audio/victory.mp3`)
 
 export const stopPlay = () => {
   audioWrong.pause()

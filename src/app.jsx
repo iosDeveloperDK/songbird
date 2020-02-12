@@ -7,7 +7,7 @@ function App() {
   return (
     <>
       <video autoPlay muted loop id="myVideo">
-        <source src="/video/chiken.mp4" type="video/mp4" />
+        <source src={`${process.env.PUBLIC_URL}/video/chiken.mp4`} type="video/mp4" />
       </video>
       <Root />
     </>
