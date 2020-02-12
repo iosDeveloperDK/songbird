@@ -2,6 +2,15 @@ const audioWrong = new Audio('/audio/wrong.mp3')
 const audioCorrect = new Audio('/audio/correct.mp3')
 const audioVictory = new Audio('/audio/victory.mp3')
 
+export const stopPlay = () => {
+  audioWrong.pause()
+  audioCorrect.pause()
+  audioVictory.pause()
+  audioWrong.currentTime = 0
+  audioCorrect.currentTime = 0
+  audioVictory.currentTime = 0
+}
+
 export const playError = () => {
   stopPlay()
   audioWrong.play()
@@ -12,38 +21,26 @@ export const playCorrect = () => {
   audioCorrect.play()
 }
 
-export const stopPlay = () => {
-  audioWrong.pause()
-  audioCorrect.pause()
-  audioVictory.pause()
-  audioWrong.currentTime = 0
-  audioCorrect.currentTime = 0
-  audioVictory.currentTime = 0
-}
-
 export const playVictory = () => {
   stopPlay()
   audioVictory.play()
 }
 
 export const calculateTotalValue = length => {
-  var minutes = Math.floor(length / 60),
-    seconds_int = length - minutes * 60,
-    seconds_str = seconds_int.toString(),
-    seconds = seconds_str.substr(0, 2),
-    time = minutes + ':' + seconds
+  const minutes = Math.floor(length / 60)
+  const secondsInt = length - minutes * 60
+  const secondsStr = secondsInt.toString()
+  const seconds = secondsStr.substr(0, 2)
 
-  return time
+  return `${minutes}:${seconds}`
 }
 
 export const calculateCurrentValue = currentTime => {
-  var current_minute = parseInt(currentTime / 60) % 60,
-    current_seconds_long = currentTime % 60,
-    current_seconds = current_seconds_long.toFixed(),
-    current_time =
-      (current_minute < 10 ? '0' + current_minute : current_minute) +
-      ':' +
-      (current_seconds < 10 ? '0' + current_seconds : current_seconds)
+  const currentMinute = parseInt(currentTime / 60, 10) % 60
+  const currentSecondsLong = currentTime % 60
+  const currentSeconds = currentSecondsLong.toFixed()
 
-  return current_time
+  return `${currentMinute < 10 ? `0${currentMinute}` : currentMinute}:${
+    currentSeconds < 10 ? `0${currentSeconds}` : currentSeconds
+  }`
 }

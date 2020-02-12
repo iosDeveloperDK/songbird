@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
+import PropTypes from 'prop-types'
 import Question from './question'
 import Answers from './answer'
 import AnswerList from './answer-list'
@@ -15,9 +16,9 @@ export default function Quiz({ data, handleNextLevel, handleScore }) {
   useEffect(() => {
     const getAnswer = data[Math.floor(Math.random() * data.length)]
     let isInsert = false
-    data.forEach(answer => {
-      if (answer.name === 'Курица' || answer.name === 'Петух') {
-        setAnser(answer)
+    data.forEach(value => {
+      if (value.name === 'Курица' || value.name === 'Петух') {
+        setAnser(value)
         isInsert = true
       }
     })
@@ -39,11 +40,11 @@ export default function Quiz({ data, handleNextLevel, handleScore }) {
     }
   }, [answers])
 
-  const handleAnswerClick = data => {
-    if (!answers.includes(data.id) && !isFind) {
-      setAnswers([...answers, data.id])
+  const handleAnswerClick = bird => {
+    if (!answers.includes(bird.id) && !isFind) {
+      setAnswers([...answers, bird.id])
     }
-    setSelectAnswer(data)
+    setSelectAnswer(bird)
   }
 
   return (
@@ -52,9 +53,9 @@ export default function Quiz({ data, handleNextLevel, handleScore }) {
       <Row>
         <Col sm={5}>
           <AnswerList
-            answers={answers}
-            data={data}
             answer={answer}
+            answers={answers}
+            birds={data}
             handleAnswerClick={handleAnswerClick}
           />
         </Col>
@@ -67,4 +68,22 @@ export default function Quiz({ data, handleNextLevel, handleScore }) {
       </Row>
     </Container>
   )
+}
+
+Quiz.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      species: PropTypes.string.isRequired,
+      image: PropTypes.string.isRequired,
+      audio: PropTypes.string.isRequired,
+    })
+  ),
+  handleNextLevel: PropTypes.func.isRequired,
+  handleScore: PropTypes.func.isRequired,
+}
+
+Quiz.defaultProps = {
+  data: [],
 }

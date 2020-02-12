@@ -1,5 +1,6 @@
 import React from 'react'
 import AudioPlayer from '../../player'
+import CONSTANTS from '../../../utils/constants'
 import './index.scss'
 
 export default function Answers({ selectAnswer }) {
@@ -12,7 +13,7 @@ export default function Answers({ selectAnswer }) {
             backgroundImage: `url(${selectAnswer.image})`,
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center'
+            backgroundPosition: 'center',
           }
         }
       >
@@ -29,7 +30,7 @@ export default function Answers({ selectAnswer }) {
           <>
             <div className="answer-container">
               <div className="answer-bar">
-                <h6>Послушайте плеер. Выберите птицу из списка</h6>
+                <h6>{CONSTANTS.answerPalceholder}</h6>
               </div>
             </div>
           </>

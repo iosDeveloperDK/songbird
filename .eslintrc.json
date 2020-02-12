@@ -1,0 +1,23 @@
+{
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "extends": ["airbnb", "prettier"],
+  "plugins": ["prettier"],
+  "rules": {
+    "import/no-named-as-default": 0,
+    "react/jsx-props-no-spreading": 0,
+    "react/prefer-stateless-function": 0,
+    "react/destructuring-assignment": 0,
+    "no-else-return": ["error", { "allowElseIf": true }],
+    "no-param-reassign": [
+      "error",
+      {
+        "props": true,
+        "ignorePropertyModificationsFor": ["draft"]
+      }
+    ]
+  }
+}

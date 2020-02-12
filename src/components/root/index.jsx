@@ -10,16 +10,14 @@ export class Root extends Component {
     this.state = { level: 0, score: 0, data: [] }
   }
 
-  randomData = datas => {
-    return datas
-      .sort(() => Math.random() - 0.5)
-      .map(data => data.sort(() => Math.random() - 0.5))
-  }
-
   componentDidMount() {
     this.setState({
-      data: this.randomData(birdsData)
+      data: this.randomData(birdsData),
     })
+  }
+
+  randomData = datas => {
+    return datas.sort(() => Math.random() - 0.5).map(data => data.sort(() => Math.random() - 0.5))
   }
 
   handleNextLevel = () => {
@@ -41,7 +39,7 @@ export class Root extends Component {
           this.setState({
             data: this.randomData(data),
             level: 0,
-            score: 0
+            score: 0,
           })
         }}
       />
