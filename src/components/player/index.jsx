@@ -73,11 +73,13 @@ export class AudioPlayer extends Component {
   }
 
   handleEvent(event) {
-    const { player, progress } = this
-    const progressbar = progress
-    const percent = event.offsetX / progressbar.offsetWidth
+    const {
+      playerRef: { current: player },
+      progressRef: { current: progress },
+    } = this
+    const percent = event.offsetX / progress.offsetWidth
     player.currentTime = percent * player.duration
-    progressbar.value = percent
+    progress.value = percent
   }
 
   render() {

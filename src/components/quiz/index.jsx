@@ -41,9 +41,9 @@ export class Quiz extends Component {
     const { handleScore } = this.props
     if (!answers.includes(bird.id) && !isFind) {
       this.setState({ answers: [...answers, bird.id] }, () => {
-        if (answers.includes(answer.id)) {
+        if (this.state.answers.includes(answer.id)) {
           this.setState({ isFind: true })
-          handleScore(score - answers.length)
+          handleScore(score - this.state.answers.length)
         }
       })
     }
