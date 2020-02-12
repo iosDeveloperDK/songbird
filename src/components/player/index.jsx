@@ -128,7 +128,11 @@ export class AudioPlayer extends Component {
 }
 
 AudioPlayer.propTypes = {
-  src: PropTypes.string.isRequired,
+  src: PropTypes.string,
+}
+
+AudioPlayer.defaultProps = {
+  src: '',
 }
 
 export default AudioPlayer
